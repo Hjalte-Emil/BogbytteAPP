@@ -48,18 +48,28 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun page1 () {
+fun page1() {
 
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
 
-        SearchBar()
+        // Search bar
+        TextField(
+            value = "",
+            onValueChange = {},
+            placeholder = { Text("Search Books") },
+            leadingIcon = {
+                Icon(Icons.Default.Search, contentDescription = "Search")
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Explore books title
         Text(
             text = "Explore books",
             fontSize = 20.sp,
@@ -68,10 +78,26 @@ fun page1 () {
 
         Divider()
 
-        BookGrid()
+        // Book grid
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
+            modifier = Modifier.height(300.dp)
+        ) {
+
+            items(6) {
+                Image(
+                    painter = painterResource(id = R.drawable.book),
+                    contentDescription = "Book",
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .height(120.dp)
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Recently added
         Text(
             text = "Recently added",
             fontSize = 20.sp,
@@ -80,96 +106,45 @@ fun page1 () {
 
         Divider()
 
-        RecentBooks()
+        LazyRow {
+
+            items(6) {
+                Image(
+                    painter = painterResource(id = R.drawable.book),
+                    contentDescription = "Book",
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .height(120.dp)
+                )
+            }
+
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 
-        BottomNavigationBar()
-    }
-}
+        // Bottom navigation
+        NavigationBar {
 
+            NavigationBarItem(
+                icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
+                label = { Text("Home") },
+                selected = true,
+                onClick = {}
+            )
 
-@Composable
-fun SearchBar() {
+            NavigationBarItem(
+                icon = { Icon(Icons.Default.List, contentDescription = "Trade Books") },
+                label = { Text("Trade") },
+                selected = false,
+                onClick = {}
+            )
 
-    TextField(
-        value = "",
-        onValueChange = {},
-        placeholder = { Text("Search Books") },
-        leadingIcon = {
-            Icon(Icons.Default.Search, contentDescription = "Search")
-        },
-        modifier = Modifier.fillMaxWidth()
-    )
-}
-
-@Composable
-fun BookGrid() {
-
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        modifier = Modifier.height(300.dp)
-    ) {
-
-        items(6) {
-            BookItem()
+            NavigationBarItem(
+                icon = { Icon(Icons.Default.List, contentDescription = "My Books") },
+                label = { Text("My Books") },
+                selected = false,
+                onClick = {}
+            )
         }
-    }
-}
-
-
-@Composable
-fun BookItem() {
-
-    Image(
-        painter = painterResource(id = R.drawable.book),
-        contentDescription = "Book",
-        modifier = Modifier
-            .padding(4.dp)
-            .height(120.dp)
-    )
-}
-
-
-
-@Composable
-fun RecentBooks() {
-
-    LazyRow {
-
-        items(6) {
-            BookItem()
-        }
-
-    }
-}
-
-
-@Composable
-fun BottomNavigationBar() {
-
-    NavigationBar {
-
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-            label = { Text("Home") },
-            selected = true,
-            onClick = {}
-        )
-
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.List, contentDescription = "Trade Books") },
-            label = { Text("Trade") },
-            selected = false,
-            onClick = {}
-        )
-
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.List, contentDescription = "My Books") },
-            label = { Text("My Books") },
-            selected = false,
-            onClick = {}
-        )
-
     }
 }
